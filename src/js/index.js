@@ -1,7 +1,19 @@
-import str from './models/Search';
+import axios from 'axios';
 
-//import { add as a, multiply as m, ID } from './views/searchView'
 
-import * as searchView from './views/searchView'
+async function getResults(query) {
+    // const proxy = 'https://cors-anywhere.herokuapp.com/'
+    const key = '9d6a8dff90dc9c611f86b709c52ce096';
+    const ID =  'd182ebf1';
+    try {  
+        const res = await axios(`https://api.edamam.com/search?q=${query}&app_id=${ID}&app_key=${key}`);
+        const recipes = res.data.hits;
+        //res.data.hits[0].recipe.calories;
+        console.log(recipes);
+    } catch (error) {
+        alert(error);
+    }
 
-console.log(`using imported functions ! ${searchView.add(searchView.ID, 2)} and ${searchView.multiply(3, 5)} and ${str}`)
+        
+}
+//getResults('pasta');
