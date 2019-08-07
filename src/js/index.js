@@ -30,13 +30,19 @@ const controlSearch = async () => {
         searchView.clearResults();
         renderLoader(elements.searchRes);
 
-        // 4) Search for recipes
+        try {
+                    // 4) Search for recipes
         await state.search.getResults();
 
         // 5) render results on UI
         clearLoader();
         searchView.renderResults(state.search.result);
         //console.log(state.search.result)
+        } catch (error) {
+            alert('somethign went wrong with the search...');
+            clearLoader();
+        }
+
     }
 }
 
@@ -58,6 +64,7 @@ elements.searchResPages.addEventListener('click', e => {
 
 /**
  * Recipe Controller
+ * */
  
 const controlRecipe = async () => {
 
@@ -71,15 +78,23 @@ const controlRecipe = async () => {
 
         // Create new recipe object
         state.recipe = new Recipe(id);
+        try {
         // Get recipe data
         await state.recipe.getRecipe();
         // Calculate servings and time
         state.recipe.calcServings();
         state.recipe.calcTime();
         // Render recipe
-        console.log(state.recipe)
+        console.log(state.recipe);
+        }
+        catch (error){
+            alert('error processing recipe');
+        }
     }
 }
 
 window.addEventListener('hashchange', controlRecipe);
-*/
+//window.addEventListener('load', controlRecipe); -UNCOMMENT IN FINAL COMMENTED DUE TO API CLICKS ISSUE 
+
+// or written another way, bit pointless though
+//['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));

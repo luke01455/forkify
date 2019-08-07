@@ -29,7 +29,7 @@ const renderRecipe = reciperend => {
     const newtitle = limitRecipeTitle(reciperend.title)
     const markup = `
     <li>
-        <a class="results__link" href="#${reciperend.recipeid}">
+        <a class="results__link" href="#${reciperend.recipe_id}">
             <figure class="results__fig">
                 <img src=${reciperend.image_url} alt="${reciperend.title}">
             </figure>
