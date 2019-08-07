@@ -1,5 +1,6 @@
 
 import axios from 'axios';
+import {key, proxy, mealID, ID} from '../config';
 
 export default class Search {
     constructor(query)  {
@@ -8,13 +9,13 @@ export default class Search {
 
     async getResults() {
         // const proxy = 'https://cors-anywhere.herokuapp.com/'
-        const key = '9d6a8dff90dc9c611f86b709c52ce096';
-        const ID =  'd182ebf1';
+
         try {  
-            const res = await axios(`https://api.edamam.com/search?q=${this.query}&app_id=${ID}&app_key=${key}`);
-            this.result = res.data.hits;
+            const res = await axios(`https://www.food2fork.com/api/search?key=${key}&q=${this.query}`);
+            this.result = res.data.recipes;
             //res.data.hits[0].recipe.calories;
-            //console.log(this.result);
+            console.log(res);
+            //console.log(res.data)
         } catch (error) {
             alert(error);
         }

@@ -26,16 +26,16 @@ const limitRecipeTitle = (title, limit = 17) => {
 
 
 const renderRecipe = reciperend => {
-    const newtitle = limitRecipeTitle(reciperend.recipe.label)
+    const newtitle = limitRecipeTitle(reciperend.title)
     const markup = `
     <li>
-        <a class="results__link" href="#${reciperend.recipe.uri}">
+        <a class="results__link" href="#${reciperend.recipeid}">
             <figure class="results__fig">
-                <img src=${reciperend.recipe.image} alt="${reciperend.recipe.label}">
+                <img src=${reciperend.image_url} alt="${reciperend.title}">
             </figure>
             <div class="results__data">
                 <h4 class="results__name">${newtitle}</h4>
-                <p class="results__author">${reciperend.recipe.source}</p>
+                <p class="results__author">${reciperend.publisher}</p>
             </div>
         </a>
     </li>
