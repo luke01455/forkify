@@ -110,3 +110,23 @@ window.addEventListener('hashchange', controlRecipe);
 
 // or written another way, bit pointless though
 //['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
+
+// Handling recipe button clicks
+elements.recipe.addEventListener('click', e => {
+    // if the click matches the button decrease or any child of the button decrease
+    if(e.target.matches('.btn-decrease, .btn-decrease *')) {
+        // decrease button is clicked
+        if(state.recipe.servings > 1) {
+        state.recipe.updateServings('dec');
+        recipeView.updateServingsIngredients(state.recipe);
+        }
+    }
+
+    if(e.target.matches('.btn-increase, .btn-increase *')) {
+        // increase button is clicked
+        state.recipe.updateServings('inc');
+        recipeView.updateServingsIngredients(state.recipe);
+    }
+});
+
+
