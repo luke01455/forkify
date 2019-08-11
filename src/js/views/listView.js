@@ -21,6 +21,6 @@ export const renderItem = item => {
 
 export const deleteItem = id => {
     // deleting an item via uniqid
-    const item = document.querySelector(`[data-itemid="${item.id}"]`);
+    const item = document.querySelector(`[data-itemid="${id}"]`);
     item.parentElement.removeChild(item);
 };
