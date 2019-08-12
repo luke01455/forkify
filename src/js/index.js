@@ -2,10 +2,11 @@ import Search from './models/Search';
 import Recipe from './models/Recipe';
 import List from './models/List';
 import Likes from './models/Likes';
-import { elements, renderLoader, clearLoader } from './views/base';
+import {elements, renderLoader, clearLoader} from './views/base';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 import * as listView from './views/listView';
+import * as likesView from './views/likesView';
 
 
 
@@ -57,7 +58,7 @@ elements.searchForm.addEventListener('submit', e => {
     controlSearch();
 });
 
-elements.searchResPages.addEventListener('click', e => {  
+elements.searchResPages.addEventListener('click', e => {
     const btn = e.target.closest('.btn-inline');
     if (btn) {
         const goToPage = parseInt(btn.dataset.goto, 10);
@@ -69,13 +70,12 @@ elements.searchResPages.addEventListener('click', e => {
 /**
  * Recipe Controller
  * */
- 
+
 const controlRecipe = async () => {
 
     // Get ID from url
 
     const id = window.location.hash.replace('#', '');
-    
 
     if(id) {
         // Prepare UI for changes
@@ -86,7 +86,7 @@ const controlRecipe = async () => {
         if(state.search) {searchView.highlightSelected(id)};
 
 
-        // Create new recipe object 
+        // Create new recipe object
         state.recipe = new Recipe(id);
 
 
@@ -94,13 +94,14 @@ const controlRecipe = async () => {
         // Get recipe data and parse ingredients
         await state.recipe.getRecipe();
         state.recipe.parseIngredients();
-        
+
         // Calculate servings and time
         state.recipe.calcServings();
         state.recipe.calcTime();
         // Render recipe
         clearLoader();
-        recipeView.renderRecipe(state.recipe);
+        recipeView.renderRecipe(state.recipe, state.likes.isLiked(id)
+            );
         }
         catch (error){
             alert('error processing recipe');
@@ -109,7 +110,7 @@ const controlRecipe = async () => {
 }
 
 window.addEventListener('hashchange', controlRecipe);
-//window.addEventListener('load', controlRecipe); -UNCOMMENT IN FINAL COMMENTED DUE TO API CLICKS ISSUE 
+//window.addEventListener('load', controlRecipe); -UNCOMMENT IN FINAL COMMENTED DUE TO API CLICKS ISSUE
 
 // or written another way, bit pointless though
 //['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
@@ -118,6 +119,7 @@ window.addEventListener('hashchange', controlRecipe);
 /**
  * List Controller
  * */
+state.likes = new Likes();
 
  const controlList = () => {
     // Create a new list if there isnt already one
@@ -152,6 +154,8 @@ elements.shopping.addEventListener('click', e => {
 /**
  * Like Controller
  * */
+// TESTING
+
 
  const controlLike = () => {
     if(!state.likes) state.likes = new Likes();
@@ -168,9 +172,9 @@ elements.shopping.addEventListener('click', e => {
             state.recipe.img
         );
         // toggle the like button
-
+        likesView.toggleLikeBtn(true);
         // add like to UI list
-        console.log(state.likes);
+        likesView.renderLike(newLike);
 
     // user has liked current recipe
     } else {
@@ -178,10 +182,12 @@ elements.shopping.addEventListener('click', e => {
         // Remove like to the state
         state.likes.deleteLike(currentID);
         // toggle the like button
-
+        likesView.toggleLikeBtn(false);
         // remove  like from UI list
-        console.log(state.likes);
+        likesView.deleteLikes(currentID);
     }
+    likesView.toggleLikeMenu(state.likes.getNumLikes());
+
  }
 
 
@@ -210,5 +216,3 @@ elements.recipe.addEventListener('click', e => {
         controlLike();
     }
 });
-
-window.l = new List();
