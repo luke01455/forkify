@@ -119,7 +119,7 @@ window.addEventListener('hashchange', controlRecipe);
 /**
  * List Controller
  * */
-state.likes = new Likes();
+
 
  const controlList = () => {
     // Create a new list if there isnt already one
@@ -154,7 +154,6 @@ elements.shopping.addEventListener('click', e => {
 /**
  * Like Controller
  * */
-// TESTING
 
 
  const controlLike = () => {
@@ -186,10 +185,23 @@ elements.shopping.addEventListener('click', e => {
         // remove  like from UI list
         likesView.deleteLikes(currentID);
     }
-    likesView.toggleLikeMenu(state.likes.getNumLikes());
+    ;
 
  }
 
+  // Restore likes recipes on page load
+  window.addEventListener('load', () => {
+    state.likes = new Likes();
+
+    // Restore likes
+    state.likes.readStorage();
+
+    // Toggle like menu button
+    likesView.toggleLikeMenu(state.likes.getNumLikes());
+
+    // render existing likes
+    state.likes.likes.forEach(like => likesView.renderLike(like))
+  })
 
 
 // Handling recipe button clicks
